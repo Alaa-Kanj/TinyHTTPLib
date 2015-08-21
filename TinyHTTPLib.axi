@@ -521,7 +521,7 @@ data_event[http_sockets] {
             if (http_parse_resp(http_socket_buff[i], response)) {
                 
                 // Should we handle responses?
-                #if_defined HTTP_RESP_CALLBACK
+                #if_defined resp_callback
                 http_response_received(req_obj.seq, req_obj.host, req_obj.request, response)
                 #end_if
                 //
@@ -530,7 +530,7 @@ data_event[http_sockets] {
                 amx_log(AMX_ERROR, "'HTTP parsing error (', ERR_TXT[ERR_BAD_RESP], ').'")
                 
                 // Should we handle errors?
-                #if_defined HTTP_ERR_CALLBACK
+                #if_defined err_callback
                 http_error(req_obj.seq, req_obj.host, req_obj.request, ERR_BAD_RESP)
                 #end_if
                 //
@@ -553,7 +553,7 @@ data_event[http_sockets] {
         amx_log(AMX_ERROR, "'HTTP socket error (', ERR_TXT[data.number], ')'")
         
         // Should we handle errors?
-        #if_defined HTTP_ERR_CALLBACK
+        #if_defined err_callback
         http_error(req_obj.seq, req_obj.host, req_obj.request, data.number)
         #end_if
         //
@@ -593,7 +593,7 @@ timeline_event[TL_15] {
 
     amx_log(AMX_ERROR, 'HTTP response timed out')
 
-    #if_defined HTTP_ERR_CALLBACK
+    #if_defined err_callback
     http_error(req_obj.seq, req_obj.host, req_obj.request, MAX_RESP_TIMEOUT)
     #end_if
 
